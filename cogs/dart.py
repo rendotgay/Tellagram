@@ -1,6 +1,7 @@
 import random
 
 import disnake
+from disnake import File
 from disnake.ext import commands
 
 from logs import logger
@@ -18,7 +19,8 @@ class DartCog(commands.Cog):
     ):
         roll = random.randint(0, 5)
         logger.debug(f"{inter.user.name} rolled a {'bullseye!' if roll == 5 else roll}")
-        await inter.response.send_message("dart")
+
+        await inter.response.send_message(file=File(f"assets/dart/{roll}.webp"))
 
 
 def setup(bot: commands.Bot):

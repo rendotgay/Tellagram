@@ -3,8 +3,10 @@
 A Discord bot for emulating Telegram's Dice stickers
 
 ## Planned Features
-- Darts
+- Darts ✅
 - Slots
 - Basketball
 - Dice
 - Coin Flip
+- Soccer
+- Bowling
