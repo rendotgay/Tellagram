@@ -26,8 +26,8 @@ def load_extensions() -> None:
 
 
 def main():
-    load_dotenv()
     load_extensions()
+    load_dotenv()
     bot.run(os.getenv("TOKEN"))
 
 

@@ -13,13 +13,9 @@ def get_basketball_result(roll: int) -> str:
 GAME_CONFIG = {
     "🎯": {"name": "dart", "folder": "dart", "min_roll": 0, "max_roll": 5},
     "🎲": {"name": "dice", "folder": "dice", "min_roll": 1, "max_roll": 6},
-    "🏀": {
-        "name": "basketball",
-        "folder": "basketball",
-        "min_roll": 1,
-        "max_roll": 5,
-        "logic": get_basketball_result
-    },
+    "🎳": {"name": "bowling", "folder": "bowling", "min_roll": 1, "max_roll": 6},
+    "⚽": {"name": "soccer", "folder": "soccer-ball", "min_roll": 1, "max_roll": 5},
+    "🏀": {"name": "basketball", "folder": "basketball", "min_roll": 1, "max_roll": 5},
 }
 
 

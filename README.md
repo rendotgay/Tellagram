@@ -7,6 +7,6 @@ A Discord bot for emulating Telegram's Dice stickers
 - Slots
 - Basketball ✅
 - Dice ✅
-- Coin Flip
-- Soccer
-- Bowling
+- Coin Flip ❎
+- Soccer ✅
+- Bowling ✅
