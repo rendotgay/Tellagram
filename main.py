@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from logs import logger
 
 intents = disnake.Intents.default()
+intents.message_content = True
 
 bot = commands.InteractionBot(intents=intents)
 
