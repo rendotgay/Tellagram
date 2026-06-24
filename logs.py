@@ -70,9 +70,9 @@ class CustomFormatter(logging.Formatter):
         elif record.levelno == 15:
             color = MODULE_COLORS.get(rel_module, "")
             if color:
-                return f"{color}{BOLD}[{rel_module}]{RESET} {GREEN}{msg}"
+                return f"{color}{BOLD}[{rel_module}]{RESET} {GREEN}{msg}{RESET}"
             else:
-                return f"{GREEN}{BOLD}[{rel_module}]{RESET}{GREEN} {GREEN}{msg}"
+                return f"{GREEN}{BOLD}[{rel_module}]{RESET}{GREEN} {GREEN}{msg}{RESET}"
 
         else:  # INFO / DEBUG etc.
             color = MODULE_COLORS.get(rel_module, "")
