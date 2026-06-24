@@ -11,10 +11,11 @@ from logs import logger
 GAME_CONFIG = {
     "🎯": {"name": "dart", "folder": "dart", "min_roll": 0, "max_roll": 5},
     "🎲": {"name": "dice", "folder": "dice", "min_roll": 1, "max_roll": 6},
+    "🏀": {"name": "basketball", "basketball": "dice", "min_roll": 0, "max_roll": 1},
 }
 
 
-class DartCog(commands.Cog):
+class DiceCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self._register_commands()
@@ -75,4 +76,4 @@ class DartCog(commands.Cog):
 
 
 def setup(bot: commands.Bot):
-    bot.add_cog(DartCog(bot))
+    bot.add_cog(DiceCog(bot))

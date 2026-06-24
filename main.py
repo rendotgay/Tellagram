@@ -13,7 +13,7 @@ bot = commands.InteractionBot(intents=intents)
 
 EXTENSIONS = (
     "cogs.lifecycle",
-    "cogs.dart",
+    "cogs.dice",
 )
 
 def load_extensions() -> None:
