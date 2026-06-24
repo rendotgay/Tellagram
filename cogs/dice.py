@@ -11,7 +11,7 @@ from logs import logger
 GAME_CONFIG = {
     "🎯": {"name": "dart", "folder": "dart", "min_roll": 0, "max_roll": 5},
     "🎲": {"name": "dice", "folder": "dice", "min_roll": 1, "max_roll": 6},
-    "🏀": {"name": "basketball", "basketball": "dice", "min_roll": 0, "max_roll": 1},
+    "🏀": {"name": "basketball", "folder": "basketball", "min_roll": 0, "max_roll": 1},
 }
 
 
