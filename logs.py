@@ -6,6 +6,16 @@ import os
 
 os.environ["TERM"] = "xterm-256color"
 os.environ["NO_COLOR"] = ""
+logging.addLevelName(logging.WARNING, "WARN")
+logging.addLevelName(logging.CRITICAL, "CRIT")
+logging.addLevelName(15, "SUCCESS")
+
+def success(self, message, *args, **kws):
+    if self.isEnabledFor(15):
+        self._log(15, message, args, **kws)
+
+logging.Logger.success = success
+
 
 # ANSI Colors
 RED = "\033[91m"
@@ -51,20 +61,25 @@ class CustomFormatter(logging.Formatter):
         rel_module = getattr(record, 'rel_module', Path(record.pathname).stem)
         msg = record.getMessage()
 
-        bold_module = f"{BOLD}{rel_module}{RESET}"
-
         if record.levelno >= logging.ERROR:
-            return f"{RED}[{record.levelname}] {bold_module}:{record.lineno}{RESET}\n{msg}"
+            return f"{RED}[{record.levelname}] {BOLD}{rel_module}:{record.lineno}{RESET}{RED}\n{msg}{RESET}"
 
         elif record.levelno >= logging.WARNING:
-            return f"{YELLOW}[{record.levelname}] {bold_module}:{record.lineno} - {msg}{RESET}"
+            return f"{YELLOW}[{record.levelname}] {BOLD}{rel_module}:{record.lineno}{RESET}{YELLOW} - {msg}{RESET}"
+
+        elif record.levelno == 15:
+            color = MODULE_COLORS.get(rel_module, "")
+            if color:
+                return f"{color}{BOLD}[{rel_module}]{RESET} {GREEN}{msg}"
+            else:
+                return f"{GREEN}{BOLD}[{rel_module}]{RESET}{GREEN} {GREEN}{msg}"
 
         else:  # INFO / DEBUG etc.
             color = MODULE_COLORS.get(rel_module, "")
             if color:
                 return f"{color}{BOLD}[{rel_module}]{RESET} {msg}"
             else:
-                return f"[{bold_module}] {msg}"
+                return f"{BOLD}[{rel_module}]{RESET} {msg}"
 
 
 logger = logging.getLogger("app_logger")
