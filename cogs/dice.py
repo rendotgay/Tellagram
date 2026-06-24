@@ -1,17 +1,25 @@
 import os
 import random
-
 import disnake
 from disnake import File
 from disnake.ext import commands
-
 from logs import logger
 
-# min_roll is optional, defaults to 0 if not provided
+
+def get_basketball_result(roll: int) -> str:
+    return "1" if roll >= 4 else "0"
+
+
 GAME_CONFIG = {
     "🎯": {"name": "dart", "folder": "dart", "min_roll": 0, "max_roll": 5},
     "🎲": {"name": "dice", "folder": "dice", "min_roll": 1, "max_roll": 6},
-    "🏀": {"name": "basketball", "folder": "basketball", "min_roll": 0, "max_roll": 1},
+    "🏀": {
+        "name": "basketball",
+        "folder": "basketball",
+        "min_roll": 1,
+        "max_roll": 5,
+        "logic": get_basketball_result
+    },
 }
 
 
@@ -25,15 +33,15 @@ class DiceCog(commands.Cog):
             def create_command(config):
                 async def command_func(inter: disnake.ApplicationCommandInteraction):
                     await inter.response.send_message(
-                        file=self.get_image(config["folder"], config["max_roll"], config.get("min_roll", 0), inter.user.name)
+                        file=self.get_image(config, inter.user.name)
                     )
+
                 return command_func
 
             cmd = commands.InvokableSlashCommand(
                 func=create_command(cfg),
                 name=cfg["name"],
                 description=f"Roll for a {cfg['name']}",
-                # Use these flags to set availability
                 install_types=disnake.ApplicationInstallTypes(guild=True, user=True),
                 contexts=disnake.InteractionContextTypes(guild=True, bot_dm=True, private_channel=True)
             )
@@ -50,10 +58,18 @@ class DiceCog(commands.Cog):
         except (disnake.Forbidden, disnake.HTTPException):
             return None
 
-    def get_image(self, folder: str, max_roll: int, min_roll: int, username: str = "Someone"):
-        roll = random.randint(min_roll, max_roll)
-        logger.debug(f"{username} rolled a {folder} and got a {'bullseye!' if roll == max_roll and folder == 'dart' else roll}")
-        return File(f"assets/{folder}/{roll}.webp")
+    def get_image(self, config: dict, username: str = "Someone"):
+        roll = random.randint(config.get("min_roll", 0), config["max_roll"])
+
+        # logic_func is applied if it exists in the config
+        if "logic" in config:
+            filename = config["logic"](roll)
+        else:
+            filename = str(roll)
+
+        logger.debug(
+            f"{username} rolled a {config['folder']} and got a {'bullseye!' if roll == config['max_roll'] and config['folder'] == 'dart' else roll}")
+        return File(f"assets/{config['folder']}/{filename}.webp")
 
     @commands.Cog.listener()
     async def on_message(self, message: disnake.Message):
@@ -71,7 +87,7 @@ class DiceCog(commands.Cog):
         await webhook.send(
             username=saved.author.display_name,
             avatar_url=saved.author.display_avatar.url,
-            file=self.get_image(cfg["folder"], cfg["max_roll"], cfg.get("min_roll", 0), message.author.name)
+            file=self.get_image(cfg, message.author.name)
         )
 
 
