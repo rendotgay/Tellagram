@@ -11,7 +11,7 @@ class LifecycleCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        logger.info(f"Logged in as {self.bot.user}!")
+        logger.success(f"Logged in as {self.bot.user}!")
 
 
 def setup(bot: commands.Bot):
